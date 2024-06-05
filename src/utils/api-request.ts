@@ -32,7 +32,6 @@ class ApiRequest {
 
     this.axiosInstance.interceptors.request.use(
       (config) => {
-        console.log("URL: ", config.url);
         // Get the token from cookies
         const token = document.cookie
           .split("; ")
