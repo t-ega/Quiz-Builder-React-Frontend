@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "../utils/quiz-test.context";
+import { ROUTES } from "../utils/routes";
 
 const cache = { token: "", username: "" };
 
@@ -27,7 +28,7 @@ const PrivateRoute = () => {
 
   useEffect(() => {
     if (!cache.token) {
-      navigate("/auth/login");
+      navigate(ROUTES.LOGIN);
     }
   }, []);
 

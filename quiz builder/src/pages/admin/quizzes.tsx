@@ -6,6 +6,7 @@ import { getQuizzess } from "../../api-requests/quiz";
 import Loader from "../../components/loader";
 import NotFound from "../errors/404";
 import { formatDate } from "../../utils/format-date";
+import { ROUTES } from "../../utils/routes";
 
 const columns: GridColDef[] = [
   { field: "public_id", headerName: "Id", width: 150 },
@@ -32,12 +33,13 @@ const Quizzes = (props: IComponentProps) => {
   const navigate = useNavigate();
 
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
-    navigate(`/quizzes/${params.row.public_id}`);
+    navigate(`${ROUTES.QUIZZES}/${params.row.public_id}`);
   };
 
   const quizzes = useQuery({
     queryKey: ["quizzes"],
     queryFn: getQuizzess,
+    staleTime: 1000 * 60 * 5,
   });
 
   if (quizzes.isLoading) return <Loader />;

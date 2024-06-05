@@ -5,16 +5,23 @@ import { useEffect, useState } from "react";
 import Loader from "../../components/loader";
 import { IComponentProps } from "../../utils/interfaces";
 import axios, { CancelToken } from "axios";
+import { formatDate } from "../../utils/format-date";
 
 const columns: GridColDef[] = [
   { field: "title", headerName: "Title", width: 140 },
   { field: "duration", headerName: "Duration", width: 130 },
-  { field: "opens at", headerName: "Opens At", width: 130 },
+  {
+    field: "opens_at",
+    headerName: "Opens At",
+    width: 130,
+    valueFormatter: (params: string) => (params ? formatDate(params) : "NA"),
+  },
   {
     field: "closes_at",
     headerName: "Closes At",
     description: "This column has a value getter and is not sortable.",
     sortable: false,
+    valueFormatter: (params: string) => (params ? formatDate(params) : "NA"),
     width: 160,
   },
   {
@@ -33,12 +40,14 @@ const columns: GridColDef[] = [
     field: "created_at",
     headerName: "Created At",
     sortable: false,
+    valueFormatter: (params: string) => formatDate(params),
     width: 160,
   },
   {
     field: "updated_at",
     headerName: "Updated At",
     sortable: false,
+    valueFormatter: (params: string) => formatDate(params),
     width: 160,
   },
 ];
@@ -69,7 +78,7 @@ const QuizResults = (props: IComponentProps) => {
   return (
     <div className="quiz-dashboard">
       <h2>Results</h2>
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%", marginTop: "50px" }}>
         {loading ? (
           <Loader />
         ) : (

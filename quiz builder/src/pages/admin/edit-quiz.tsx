@@ -19,6 +19,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchQuizDetails, updateQuiz } from "../../api-requests/quiz";
 import Loader from "../../components/loader";
 import ErrorPage from "../errors/error";
+import { ROUTES } from "../../utils/routes";
 
 const EditQuiz = (props: IComponentProps) => {
   const { displayErrors } = props;
@@ -62,7 +63,7 @@ const EditQuiz = (props: IComponentProps) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["quiz", "details", quizId] });
       dispatch(resetStore());
-      navigate(`/quizzes/${quizId}`);
+      navigate(`${ROUTES.QUIZZES}/${quizId}`);
     },
     onError: (err, _, __) => {
       const message = ApiRequest.extractApiErrors(err);

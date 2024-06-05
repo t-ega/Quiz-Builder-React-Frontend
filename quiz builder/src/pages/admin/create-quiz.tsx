@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { IComponentProps } from "../../utils/interfaces";
 import { useMutation } from "@tanstack/react-query";
 import { createQuiz } from "../../api-requests/quiz";
+import { ROUTES } from "../../utils/routes";
 
 const CreateQuiz = (props: IComponentProps) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,7 +48,7 @@ const CreateQuiz = (props: IComponentProps) => {
     mutationFn: createQuiz,
     onSuccess: ({ data }) => {
       dispatch(resetStore());
-      navigate(`/quizzes/${data.data.public_id}`);
+      navigate(`${ROUTES.QUIZZES}/${data.data.public_id}`);
     },
     onError: (err, _, __) => {
       const message = ApiRequest.extractApiErrors(err);

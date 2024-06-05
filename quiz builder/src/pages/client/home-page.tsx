@@ -11,6 +11,7 @@ import LoadingButton from "../../components/loading-button";
 import { toast } from "react-toastify";
 import { getQuizStartTime, setQuizStartTime } from "../../utils/cookies";
 import ErrorPage from "../errors/error";
+import { ROUTES } from "../../utils/routes";
 
 interface IHomePageProps {
   setQuizData: React.Dispatch<React.SetStateAction<IQuizTest | null>>;
@@ -75,15 +76,15 @@ const HomePage = (props: IHomePageProps) => {
     props.setQuizData({ email, title, duration, questions });
 
     // if the quiz has a duration then store it in a cookie incase
-    // they close the page and open it again it still remains
+    // the user close the page and open it again it still remains
     if (duration) {
-      const existingCookie = getQuizStartTime(quizId!);
+      const existingCookie = getQuizStartTime(email, quizId!);
       if (!existingCookie) {
-        setQuizStartTime(quizId!);
+        setQuizStartTime(email, quizId!);
       }
     }
 
-    navigate(`/${quizId}/start`);
+    navigate(`${ROUTES.TESTS}/${quizId}/start`);
   };
 
   const displayErrors = (errors: string[] | string, toastId?: number) => {
@@ -110,33 +111,93 @@ const HomePage = (props: IHomePageProps) => {
 
   return (
     <>
-      <Header heading={data.data.quiz.user.username} text="Assessment" />
+      <Header
+        heading={data.data.quiz.user.username}
+        styles={{ position: "fixed" }}
+        text="Assessment"
+      />
 
       <div
         className="card"
         style={{
           display: "flex",
           height: "100vh",
+          marginTop: "50px",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
         <div>
-          <h2>{data.data?.quiz.title}</h2>
+          <hr />
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore
-            quos voluptatem quaerat odit quas distinctio iste optio dolorem
-            nobis ex. Non, quo! Quis expedita nisi quasi, dolores ad autem
-            numquam.
+            <strong>Cheating is Not Allowed:</strong> Ensure that you complete
+            the quiz on your own without any outside help. Any form of cheating
+            or academic dishonesty will result in disqualification.
           </p>
+
+          <p>
+            <strong>Time Management:</strong> You have a limited time of 30
+            minutes to complete the quiz. Keep an eye on the timer and make sure
+            to allocate your time wisely across all questions.
+          </p>
+
+          <p>
+            <strong>Read Carefully:</strong> Read each question and all answer
+            choices thoroughly before selecting your answer. Some questions may
+            have similar options, so take your time to choose the best one.
+          </p>
+
+          <p>
+            <strong>Answer All Questions:</strong> Make sure to answer all the
+            questions. There is no penalty for guessing, so it’s better to guess
+            an answer rather than leave it blank.
+          </p>
+
+          <p>
+            <strong>No Retakes:</strong> Once you submit your answers, you will
+            not be able to retake the quiz. Make sure you are ready before
+            starting the quiz.
+          </p>
+
+          <p>
+            <strong>Stable Internet Connection:</strong> Ensure you have a
+            stable internet connection throughout the quiz. Losing connection
+            might cause your answers to not be submitted properly.
+          </p>
+
+          <p>
+            <strong>Environment:</strong> Take the quiz in a quiet place free
+            from distractions. This will help you concentrate better and perform
+            to the best of your abilities.
+          </p>
+
+          <p>
+            <strong>Technical Issues:</strong> If you encounter any technical
+            issues during the quiz, contact the support team immediately. Do not
+            try to resolve it on your own as it might affect your submission.
+          </p>
+
+          <p>
+            <strong>Use of Resources:</strong> Unless specified, do not use
+            textbooks, notes, or any online resources. The quiz is designed to
+            test your knowledge and understanding of the subject matter.
+          </p>
+
+          <p>
+            <strong>Submission:</strong> Once you have answered all questions,
+            review your answers before submitting. Make sure you have answered
+            everything to the best of your ability.
+          </p>
+        </div>
+        <div>
+          <h2>{data.data?.quiz.title}</h2>
+          <h3>Quiz Overview</h3>
           <h4>
             Number of questions: <span>{data.data?.quiz.questions_count}</span>
           </h4>
           {data.data?.quiz.duration && (
             <h4>Duration: {data.data?.quiz.duration} mins</h4>
           )}
-        </div>
-        <div>
           <h3>
             To Begin please kindly enter your email address where the quiz was
             sent to
@@ -150,7 +211,11 @@ const HomePage = (props: IHomePageProps) => {
           {testQuestionsQuery.isFetching ? (
             <LoadingButton className="action-btn loading" />
           ) : (
-            <button className="action-btn" onClick={() => start()}>
+            <button
+              className="action-btn"
+              style={{ width: "100%" }}
+              onClick={() => start()}
+            >
               Start
             </button>
           )}

@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { ENDPOINTS } from "../utils/endpoints";
-import ApiRequest from "../utils/api-request";
 import { Link, useNavigate } from "react-router-dom";
-import { IComponentProps } from "../utils/interfaces";
-import { SignUpSchema } from "../utils/validations/auth";
+
+import { useMutation } from "@tanstack/react-query";
+import { IComponentProps } from "../../utils/interfaces";
+import { signup } from "../../api-requests/auth";
+import { SignUpSchema } from "../../utils/validations/auth";
+import apiRequest from "../../utils/api-request";
+import LoadingButton from "../loading-button";
 
 const SignUpForm = (props: IComponentProps) => {
   const { displayErrors } = props;
@@ -14,6 +17,10 @@ const SignUpForm = (props: IComponentProps) => {
     companyName: "",
     password: "",
     passwordConfirmation: "",
+  });
+
+  const signupMutaion = useMutation({
+    mutationFn: signup,
   });
 
   const handleSubmitEvent = async (e: React.FormEvent) => {
@@ -30,18 +37,24 @@ const SignUpForm = (props: IComponentProps) => {
     if (validation.error) {
       const { formErrors, fieldErrors } = validation.error.flatten();
       const allErrors = [...formErrors, ...Object.values(fieldErrors).flat()];
-      console.log(validation.error.errors);
       displayErrors(allErrors);
       return;
     }
 
-    try {
-      await ApiRequest.post(ENDPOINTS.SIGNUP, validation.data);
-      navigate("/");
-    } catch (error: any) {
-      const message = ApiRequest.extractApiErrors(error);
-      displayErrors(message);
-    }
+    signupMutaion.mutate(
+      {
+        email: validation.data.email,
+        password: validation.data.password,
+        username: validation.data.username,
+      },
+      {
+        onSuccess: () => navigate("/"),
+        onError: (error) => {
+          const message = apiRequest.extractApiErrors(error);
+          displayErrors(message);
+        },
+      }
+    );
   };
 
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
@@ -104,7 +117,11 @@ const SignUpForm = (props: IComponentProps) => {
                 placeholder="***************"
               />
             </div>
-            <button className="btn">Sign Up</button>
+            {signupMutaion.isPending ? (
+              <LoadingButton className="btn" />
+            ) : (
+              <button className="btn">Sign Up</button>
+            )}
           </div>
           <div>
             Have an account? <Link to="/auth/login">Login</Link>

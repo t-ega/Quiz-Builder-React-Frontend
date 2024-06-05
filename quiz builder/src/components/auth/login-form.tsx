@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import ApiRequest from "../utils/api-request";
-import { IComponentProps } from "../utils/interfaces";
-import { LoginSchema } from "../utils/validations/auth";
+import ApiRequest from "../../utils/api-request";
+import { IComponentProps } from "../../utils/interfaces";
+import { LoginSchema } from "../../utils/validations/auth";
 import { useMutation } from "@tanstack/react-query";
-import { login } from "../api-requests/auth";
-import LoadingButton from "./loading-button";
+import { login } from "../../api-requests/auth";
+import LoadingButton from "../loading-button";
 
 const LoginForm = (props: IComponentProps) => {
   const { displayErrors } = props;
@@ -74,7 +74,7 @@ const LoginForm = (props: IComponentProps) => {
               <Link to="">Forgot password?</Link>
             </p>
             {loginMutation.isPending ? (
-              <LoadingButton />
+              <LoadingButton className="btn" />
             ) : (
               <button className="btn">Login</button>
             )}

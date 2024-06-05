@@ -1,14 +1,14 @@
-function setQuizStartTime(quizId: string) {
+function setQuizStartTime(email: string, quizId: string) {
   const now = new Date();
   const cookieValue = encodeURIComponent(now.toISOString());
-  const cookieName = `quizStartTime:${quizId}`;
-  const expiryDays = 1;
-  const expiryDate = new Date(now.getTime() + expiryDays * 24 * 60 * 60 * 1000);
+  const cookieName = `email:${email}quizStartTime:${quizId}`;
+  const expiryHours = 1;
+  const expiryDate = new Date(now.getTime() + expiryHours * 60 * 60 * 1000);
   document.cookie = `${cookieName}=${cookieValue}; expires=${expiryDate.toUTCString()}; path=/`;
 }
 
-function getQuizStartTime(quizId: string) {
-  const cookieName = `quizStartTime:${quizId}=`;
+function getQuizStartTime(email: string, quizId: string) {
+  const cookieName = `email:${email}quizStartTime:${quizId}=`;
   const decodedCookie = decodeURIComponent(document.cookie);
   const cookieArray = decodedCookie.split(";");
 

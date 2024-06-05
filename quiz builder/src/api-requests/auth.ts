@@ -19,3 +19,7 @@ interface ISignup {
 export const signup = async (data: ISignup) => {
   return await ApiRequest.post(ENDPOINTS.SIGNUP, data);
 };
+
+export const reset = async (email: string) => {
+  return await ApiRequest.post(ENDPOINTS.RESET, email);
+};

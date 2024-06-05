@@ -95,7 +95,7 @@ const QuizEntry = (props: IComponentProps) => {
       {
         onSuccess: () => {
           toast.success("🎉 Yay! Quiz has been recorded! 🎯");
-          navigate(`/${quizId}`);
+          navigate(`/tests/${quizId}`);
         },
         onError: (error, _, __) => {
           const message = ApiRequest.extractApiErrors(error);
@@ -130,7 +130,7 @@ const QuizEntry = (props: IComponentProps) => {
 
   useEffect(() => {
     if (!quizData) {
-      navigate(`/${quizId}`);
+      navigate(`/tests/${quizId}`);
       return;
     }
 
@@ -142,7 +142,7 @@ const QuizEntry = (props: IComponentProps) => {
     let timer: number | undefined;
     // Extract the previous timer from a cookie
     if (quiz?.duration) {
-      const startedAt = getQuizStartTime(quizId!);
+      const startedAt = getQuizStartTime(quiz.email, quizId!);
       if (startedAt) {
         const remainingTime = getRemainingTime(quiz?.duration, startedAt);
         timer = startTimer(remainingTime);

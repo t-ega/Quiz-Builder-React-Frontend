@@ -545,7 +545,7 @@ button:hover {
 
 .quizzes-overview {
   justify-content: center;
-  margin: 15px;
+  margin: 50px 15px;
   align-content: center;
 }
 
@@ -659,6 +659,10 @@ input:focus {
     padding: 20px;
     min-width: 300px;
     margin-top: 30px;
+  }
+
+  .picture-card svg {
+    max-width: 80%;
   }
 
   .sidebar {

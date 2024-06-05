@@ -27,6 +27,7 @@ import {
 import ErrorPage from "../errors/error";
 import LoadingButton from "../../components/loading-button";
 import { formatDate } from "../../utils/format-date";
+import { ROUTES } from "../../utils/routes";
 
 const columns: GridColDef[] = [
   { field: "participant_email", headerName: "Email", width: 150 },
@@ -84,11 +85,11 @@ const QuizOverview = (props: IComponentProps) => {
     mutationKey: ["quiz", "delete", quizId],
     mutationFn: deleteQuiz,
     onSuccess: () => {
-      navigate("/quizzes");
+      navigate(`${ROUTES.QUIZZES}`);
       toast.success("🎉 Quiz Deleted Successfuly!");
-      // queryClient.invalidateQueries({ queryKey: ["quizzes"] });
+      queryClient.invalidateQueries({ queryKey: ["quizzes"] });
     },
-    onError: (err, _, ctx) => {
+    onError: (err) => {
       const message = ApiRequest.extractApiErrors(err);
       displayErrors(message);
     },
@@ -157,7 +158,7 @@ const QuizOverview = (props: IComponentProps) => {
 
   const copyPublicLink = () => {
     if (quiz?.permalink) {
-      const permalink = `${window.location.protocol}/${window.location.host}/${quiz.permalink}`;
+      const permalink = `${window.location.protocol}/${window.location.host}${ROUTES.TESTS}/${quiz.permalink}`;
       navigator.clipboard.writeText(permalink);
       toast.success("Link copied");
     }
@@ -237,6 +238,7 @@ const QuizOverview = (props: IComponentProps) => {
             display: "flex",
             justifyContent: "end",
             alignItems: "center",
+            marginTop: "70px",
             marginRight: "10px",
           }}
         >
@@ -404,8 +406,7 @@ const QuizOverview = (props: IComponentProps) => {
           </CardHeader>
 
           <DataGrid
-            rows={[]}
-            loading
+            rows={entries}
             sx={{ minHeight: "200px" }}
             columns={columns}
             initialState={{

@@ -3,9 +3,8 @@ import "./App.css";
 import Layout from "./pages/admin/layout";
 import CreateQuiz from "./pages/admin/create-quiz";
 import QuizResults from "./pages/admin/results";
-import LoginForm from "./components/login-form";
+import LoginForm from "./components/auth/login-form";
 import { Auth } from "./pages/auth/auth";
-import SignUpForm from "./components/signup-form";
 import Quizzes from "./pages/admin/quizzes";
 import QuizOverview from "./pages/admin/quiz-overview";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,6 +16,8 @@ import { QuizTestContext } from "./utils/quiz-test.context";
 import { IQuizTest } from "./utils/validations/client";
 import { useState } from "react";
 import NotFound from "./pages/errors/404";
+import SignUpForm from "./components/auth/signup-form";
+import { ROUTES } from "./utils/routes";
 
 function App() {
   const displayErrors = (errors: string[] | string) => {
@@ -53,10 +54,10 @@ function App() {
                   element={<Quizzes displayErrors={displayErrors} />}
                 />
                 <Route
-                  path="results"
+                  path={ROUTES.RESULTS}
                   element={<QuizResults displayErrors={displayErrors} />}
                 />
-                <Route path="quizzes">
+                <Route path={ROUTES.QUIZZES}>
                   <Route
                     index
                     element={<Quizzes displayErrors={displayErrors} />}
@@ -78,11 +79,11 @@ function App() {
               </Route>
             </Route>
             <Route
-              path=":quizId/start"
+              path="tests/:quizId/start"
               element={<QuizEntry displayErrors={displayErrors} />}
             ></Route>
             <Route
-              path=":quizId"
+              path="tests/:quizId"
               element={<HomePage setQuizData={setQuizData} />}
             ></Route>
             <Route path="auth" element={<Auth />}>
