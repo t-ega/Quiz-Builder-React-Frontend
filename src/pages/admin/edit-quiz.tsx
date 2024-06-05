@@ -98,7 +98,7 @@ const EditQuiz = (props: IComponentProps) => {
     }
   }, [quizQuery.data]);
 
-  if (quizQuery.isPending) return <Loader />;
+  if (quizQuery.isFetching) return <Loader />;
   if (quizQuery.error) return <ErrorPage message={quizQuery.error.message} />;
 
   return (

@@ -43,7 +43,7 @@ const Quizzes = (props: IComponentProps) => {
     staleTime: 1000 * 60 * 5,
   });
 
-  if (quizzes.isPending) return <Loader />;
+  if (quizzes.isFetching) return <Loader />;
   if (quizzes.isError) {
     const message = apiRequest.extractApiErrors(quizzes.error);
     displayErrors(message);
