@@ -118,7 +118,7 @@ const SignUpForm = (props: IComponentProps) => {
               />
             </div>
             {signupMutaion.isPending ? (
-              <LoadingButton className="btn" />
+              <LoadingButton className="btn disabled" />
             ) : (
               <button className="btn">Sign Up</button>
             )}

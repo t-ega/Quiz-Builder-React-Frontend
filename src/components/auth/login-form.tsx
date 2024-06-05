@@ -74,7 +74,7 @@ const LoginForm = (props: IComponentProps) => {
               <Link to="">Forgot password?</Link>
             </p>
             {loginMutation.isPending ? (
-              <LoadingButton className="btn" />
+              <LoadingButton className="btn disabled" />
             ) : (
               <button className="btn">Login</button>
             )}
