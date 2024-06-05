@@ -9,7 +9,9 @@ const ErrorPage = (props: IErrorProps) => {
       <h1>{message}</h1>
       <div className="container">
         <div>
-          <span className="hidden">Oh No! An error occurred!</span>
+          <span className="hidden">
+            Oh No! An error occurred! The sadness 😓
+          </span>
         </div>
       </div>
     </section>

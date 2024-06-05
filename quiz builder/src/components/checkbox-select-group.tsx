@@ -31,7 +31,7 @@ const CheckBoxSelectGroup = (props: IOptionProps) => {
         type="checkbox"
         className="radio-select"
         name="option"
-        onChange={(e) =>
+        onChange={() =>
           dispatch(
             checkOption({
               optionIndex: props.optionIndex,

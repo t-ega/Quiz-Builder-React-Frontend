@@ -4,9 +4,10 @@ import { IComponentProps } from "../../utils/interfaces";
 import { useQuery } from "@tanstack/react-query";
 import { getQuizzess } from "../../api-requests/quiz";
 import Loader from "../../components/loader";
-import NotFound from "../errors/404";
 import { formatDate } from "../../utils/format-date";
 import { ROUTES } from "../../utils/routes";
+import ErrorPage from "../errors/error";
+import apiRequest from "../../utils/api-request";
 
 const columns: GridColDef[] = [
   { field: "public_id", headerName: "Id", width: 150 },
@@ -44,8 +45,9 @@ const Quizzes = (props: IComponentProps) => {
 
   if (quizzes.isLoading) return <Loader />;
   if (quizzes.isError) {
-    displayErrors(quizzes.error.message);
-    return <NotFound />;
+    const message = apiRequest.extractApiErrors(quizzes.error);
+    displayErrors(message);
+    return <ErrorPage message={message} />;
   }
 
   return (
