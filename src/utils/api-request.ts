@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, CancelToken } from "axios";
 import { ENDPOINTS } from "./endpoints";
+import "dotenv/config";
 
 class ApiRequest {
   private readonly axiosInstance: AxiosInstance;
@@ -17,7 +18,7 @@ class ApiRequest {
 
   constructor() {
     this.axiosInstance = axios.create({
-      baseURL: "http://127.0.0.1:3000/api/v1",
+      baseURL: process.env.BACKEND_URL,
     });
     this.instance = this;
 
