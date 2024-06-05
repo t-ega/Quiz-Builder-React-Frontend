@@ -139,7 +139,7 @@ const QuizEntry = (props: IComponentProps) => {
   }, []);
 
   useEffect(() => {
-    let timer: number | undefined;
+    let timer: any;
     // Extract the previous timer from a cookie
     if (quiz?.duration) {
       const startedAt = getQuizStartTime(quiz.email, quizId!);
