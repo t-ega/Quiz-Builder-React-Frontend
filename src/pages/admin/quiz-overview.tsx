@@ -98,14 +98,6 @@ const QuizOverview = (props: IComponentProps) => {
   const updateQuizStatusMutation = useMutation({
     mutationKey: ["quiz", "update", "status", quizId],
     mutationFn: updateQuiz,
-    onSuccess: ({ data }) => {
-      toast.success("🎉 Quiz Status Updated Successfuly!");
-      setQuiz(data.data);
-    },
-    onError: (err) => {
-      const message = ApiRequest.extractApiErrors(err);
-      displayErrors(message);
-    },
   });
 
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
@@ -137,12 +129,27 @@ const QuizOverview = (props: IComponentProps) => {
 
     setValidationErrors(undefined);
 
-    inviteMutation.mutate({
-      email: input.email,
-      first_name: input.firstName,
-      last_name: input.lastName,
-      quizId: quizId!,
-    });
+    inviteMutation.mutate(
+      {
+        email: input.email,
+        first_name: input.firstName,
+        last_name: input.lastName,
+        quizId: quizId!,
+      },
+      {
+        onSuccess: ({ data }) => {
+          toast.success("🎉 Quiz Status Updated Successfuly!");
+          queryClient.invalidateQueries({
+            queryKey: ["quiz", "entries", quizId],
+          });
+          setQuiz(data.data);
+        },
+        onError: (err) => {
+          const message = ApiRequest.extractApiErrors(err);
+          displayErrors(message);
+        },
+      }
+    );
   };
 
   const handleDeleteQuiz = () => {
@@ -198,7 +205,7 @@ const QuizOverview = (props: IComponentProps) => {
   const [quizEntriesQuery, quizQuery] = useQueries({
     queries: [
       {
-        queryKey: ["quiz", quizId],
+        queryKey: ["quiz", "entries", quizId],
         queryFn: () => fetchQuizEntries(quizId!),
         staleTime: 1000 * 60 * 5,
       },

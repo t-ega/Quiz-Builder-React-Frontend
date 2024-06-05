@@ -102,8 +102,6 @@ class ApiRequest {
     if (data?.errors) return data.errors;
     if (data?.message) return data.message;
 
-    console.log(error, data, response);
-
     if (error.message) return error.message;
 
     return error;

@@ -53,7 +53,7 @@ const Quizzes = (props: IComponentProps) => {
   return (
     <div className="quizzes-overview">
       <div className="new-quiz">
-        <Link to={"/quizzes/new"}>
+        <Link to={`${ROUTES.QUIZZES}/new`}>
           <button className="action-btn">Create New Quiz</button>
         </Link>
       </div>
