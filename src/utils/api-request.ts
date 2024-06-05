@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, CancelToken } from "axios";
 import { ENDPOINTS } from "./endpoints";
-import "dotenv/config";
+import { z } from "zod";
 
 class ApiRequest {
   private readonly axiosInstance: AxiosInstance;
@@ -17,13 +17,22 @@ class ApiRequest {
   }
 
   constructor() {
+    const baseUrl = import.meta.env.VITE_BACKEND_URL;
+    const valid = z.string().url().safeParse(baseUrl);
+
+    if (valid.error)
+      throw new Error(
+        `Invalid Base URL set!. Expected a URL got ${baseUrl} instead`
+      );
+
     this.axiosInstance = axios.create({
-      baseURL: process.env.BACKEND_URL,
+      baseURL: baseUrl,
     });
     this.instance = this;
 
     this.axiosInstance.interceptors.request.use(
       (config) => {
+        console.log("URL: ", config.url);
         // Get the token from cookies
         const token = document.cookie
           .split("; ")

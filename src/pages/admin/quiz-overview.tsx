@@ -226,7 +226,7 @@ const QuizOverview = (props: IComponentProps) => {
     }
   }, [quizEntriesQuery.data]);
 
-  if (quizEntriesQuery.isLoading) return <Loader />;
+  if (quizEntriesQuery.isPending) return <Loader />;
   if (quizEntriesQuery.isError)
     return <ErrorPage message={quizEntriesQuery.error.message} />;
 
