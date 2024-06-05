@@ -70,29 +70,11 @@ const QuizOverview = (props: IComponentProps) => {
   const inviteMutation = useMutation({
     mutationKey: ["quiz", "invites", quizId],
     mutationFn: sendInvites,
-    onSuccess: () => {
-      toast.success("📩 Invite sent!");
-      setInput({ email: "", firstName: "", lastName: "" });
-      queryClient.invalidateQueries({ queryKey: ["quiz", quizId] });
-    },
-    onError: (err) => {
-      const message = ApiRequest.extractApiErrors(err);
-      displayErrors(message);
-    },
   });
 
   const deleteMutation = useMutation({
     mutationKey: ["quiz", "delete", quizId],
     mutationFn: deleteQuiz,
-    onSuccess: () => {
-      navigate(`${ROUTES.QUIZZES}`);
-      toast.success("🎉 Quiz Deleted Successfuly!");
-      queryClient.invalidateQueries({ queryKey: ["quizzes"] });
-    },
-    onError: (err) => {
-      const message = ApiRequest.extractApiErrors(err);
-      displayErrors(message);
-    },
   });
 
   const updateQuizStatusMutation = useMutation({
@@ -137,12 +119,12 @@ const QuizOverview = (props: IComponentProps) => {
         quizId: quizId!,
       },
       {
-        onSuccess: ({ data }) => {
-          toast.success("🎉 Quiz Status Updated Successfuly!");
+        onSuccess: () => {
+          toast.success("📩 Invite sent!");
+          setInput({ email: "", firstName: "", lastName: "" });
           queryClient.invalidateQueries({
             queryKey: ["quiz", "entries", quizId],
           });
-          setQuiz(data.data);
         },
         onError: (err) => {
           const message = ApiRequest.extractApiErrors(err);
@@ -160,7 +142,17 @@ const QuizOverview = (props: IComponentProps) => {
     )
       return;
 
-    deleteMutation.mutate(quizId!);
+    deleteMutation.mutate(quizId!, {
+      onSuccess: () => {
+        navigate(`${ROUTES.QUIZZES}`);
+        toast.success("🎉 Quiz Deleted Successfuly!");
+        queryClient.invalidateQueries({ queryKey: ["quizzes"] });
+      },
+      onError: (err) => {
+        const message = ApiRequest.extractApiErrors(err);
+        displayErrors(message);
+      },
+    });
   };
 
   const copyPublicLink = () => {
@@ -199,7 +191,19 @@ const QuizOverview = (props: IComponentProps) => {
 
     if (!confirm(message)) return;
 
-    updateQuizStatusMutation.mutate({ status, quizId: quizId! });
+    updateQuizStatusMutation.mutate(
+      { status, quizId: quizId! },
+      {
+        onSuccess: ({ data }) => {
+          toast.success("🎉 Quiz Status Updated Successfuly!");
+          setQuiz(data);
+        },
+        onError: (err) => {
+          const message = ApiRequest.extractApiErrors(err);
+          displayErrors(message);
+        },
+      }
+    );
   };
 
   const [quizEntriesQuery, quizQuery] = useQueries({
