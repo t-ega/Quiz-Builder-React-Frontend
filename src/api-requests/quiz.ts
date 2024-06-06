@@ -10,11 +10,9 @@ export const getQuizzess = async () => {
 };
 
 export const fetchQuizEntries = async (quizId: string) => {
-  console.log("Finally ooo");
   const url = `${ENDPOINTS.ADMIN_QUIZ}/${quizId}/entries`;
   return await ApiRequest.get(url).then((resp) => {
     if (!resp) {
-      console.log("Opps no trespo");
       return;
     }
     return resp.data;

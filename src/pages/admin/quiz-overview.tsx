@@ -221,7 +221,6 @@ const QuizOverview = (props: IComponentProps) => {
   useEffect(() => {
     const response = quizQuery.data;
     if (response) {
-      console.log("Quiz loaded", response.data);
       setQuiz(response.data);
       const date = formatDate(response.data.created_at);
       setFormattedDate(date);
