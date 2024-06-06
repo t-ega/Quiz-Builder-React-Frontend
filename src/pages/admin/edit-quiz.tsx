@@ -41,6 +41,8 @@ const EditQuiz = (props: IComponentProps) => {
   const { quizId } = useParams();
 
   const save = async () => {
+    if (saveQuizMutation.isPending) return; // Prevent multiple calls
+
     const validQuestions = QuizOutputSchema.safeParse(quiz);
 
     if (!validQuestions.success) {

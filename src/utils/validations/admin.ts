@@ -44,7 +44,7 @@ export const QuestionSchema = z
 export const QuestionsSchema = z.array(QuestionSchema);
 export const QuizOutputSchema = z
   .object({
-    title: z.string().min(3, "Title too short").max(50),
+    title: z.string().min(3, "Title too short"),
     duration: z.enum(["", "10", "20", "30", "40", "60"], {
       message: "Please pass in a valid duration",
     }),

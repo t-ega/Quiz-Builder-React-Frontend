@@ -121,7 +121,7 @@ const HomePage = (props: IHomePageProps) => {
         className="card"
         style={{
           display: "flex",
-          height: "100vh",
+          padding: 20,
           marginTop: "50px",
           alignItems: "center",
           justifyContent: "center",
@@ -189,7 +189,8 @@ const HomePage = (props: IHomePageProps) => {
             everything to the best of your ability.
           </p>
         </div>
-        <div>
+
+        <div style={{ margin: 10 }}>
           <h2>{data.data?.quiz.title}</h2>
           <h3>Quiz Overview</h3>
           <h4>
@@ -213,7 +214,11 @@ const HomePage = (props: IHomePageProps) => {
           ) : (
             <button
               className="action-btn"
-              style={{ width: "100%" }}
+              style={{
+                width: "100%",
+                display: "inline-block",
+                margin: "10px 0px",
+              }}
               onClick={() => start()}
             >
               Start

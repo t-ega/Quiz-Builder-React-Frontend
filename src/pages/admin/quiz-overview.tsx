@@ -68,17 +68,14 @@ const QuizOverview = (props: IComponentProps) => {
   const queryClient = useQueryClient();
 
   const inviteMutation = useMutation({
-    mutationKey: ["quiz", "invites", quizId],
     mutationFn: sendInvites,
   });
 
   const deleteMutation = useMutation({
-    mutationKey: ["quiz", "delete", quizId],
     mutationFn: deleteQuiz,
   });
 
   const updateQuizStatusMutation = useMutation({
-    mutationKey: ["quiz", "update", "status", quizId],
     mutationFn: updateQuiz,
   });
 
@@ -196,7 +193,7 @@ const QuizOverview = (props: IComponentProps) => {
       {
         onSuccess: ({ data }) => {
           toast.success("🎉 Quiz Status Updated Successfuly!");
-          setQuiz(data);
+          setQuiz(data.data);
         },
         onError: (err) => {
           const message = ApiRequest.extractApiErrors(err);
@@ -224,6 +221,7 @@ const QuizOverview = (props: IComponentProps) => {
   useEffect(() => {
     const response = quizQuery.data;
     if (response) {
+      console.log("Quiz loaded", response.data);
       setQuiz(response.data);
       const date = formatDate(response.data.created_at);
       setFormattedDate(date);
@@ -304,15 +302,25 @@ const QuizOverview = (props: IComponentProps) => {
             <div>
               <h2 style={{ textTransform: "capitalize" }}>{quiz?.title}</h2>
               <div>
-                {quiz?.duration && `${quiz.duration} mins | `}{" "}
                 <div
                   style={{
-                    display: "flex",
                     alignItems: "center",
                   }}
                 >
-                  <h4 style={{ margin: "0px" }}>Created:</h4>
-                  {formattedDate}
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <h4 style={{ margin: "0px" }}>Created: </h4>
+                      <p>{formattedDate}</p>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <h4>Total Questions: {"  "}</h4>
+                      <p>{quiz?.questions.length} </p>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <h4>Duration: {"  "}</h4>
+                      <p>{quiz?.duration ? `${quiz.duration} mins` : "NA"} </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
