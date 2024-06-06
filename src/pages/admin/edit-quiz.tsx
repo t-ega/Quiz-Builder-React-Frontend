@@ -44,6 +44,7 @@ const EditQuiz = (props: IComponentProps) => {
     if (saveQuizMutation.isPending) return; // Prevent multiple calls
 
     const validQuestions = QuizOutputSchema.safeParse(quiz);
+    console.log("Updated quiz!", validQuestions.data);
 
     if (!validQuestions.success) {
       const { formErrors, fieldErrors } = validQuestions.error.flatten();
