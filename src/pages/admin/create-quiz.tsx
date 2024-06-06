@@ -33,6 +33,8 @@ const CreateQuiz = (props: IComponentProps) => {
   };
 
   const save = async () => {
+    if (saveQuizMutation.isPending) return; // Prevent multiple calls
+
     const validQuestions = QuizOutputSchema.safeParse(quiz);
 
     if (validQuestions.error) {
@@ -50,7 +52,7 @@ const CreateQuiz = (props: IComponentProps) => {
       dispatch(resetStore());
       navigate(`${ROUTES.QUIZZES}/${data.data.public_id}`);
     },
-    onError: (err, _, __) => {
+    onError: (err) => {
       const message = ApiRequest.extractApiErrors(err);
       displayErrors(message);
     },

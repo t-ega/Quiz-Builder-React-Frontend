@@ -15,18 +15,17 @@ const columns: GridColDef[] = [
   { field: "quiz_entries_count", headerName: "Invitees" },
   { field: "status", headerName: "Status" },
   {
-    field: "opens_at",
-    headerName: "Opens At",
-    valueFormatter: (value: string) => (value ? formatDate(value) : "Not set"),
-  },
-  {
-    field: "closes_at",
-    headerName: "Closes At",
-    valueFormatter: (value: string) => (value ? formatDate(value) : "Not set"),
+    field: "duration",
+    headerName: "Duration",
+    valueFormatter: (value: string) => (value ? `${value} mins` : "Not set"),
   },
   { field: "questions_count", headerName: "Questions" },
   { field: "permalink", headerName: "Permalink" },
-  { field: "created_at", headerName: "Date created" },
+  {
+    field: "created_at",
+    headerName: "Date created",
+    valueFormatter: (value: string) => formatDate(value),
+  },
 ];
 
 const Quizzes = (props: IComponentProps) => {

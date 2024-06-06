@@ -34,6 +34,10 @@ const QuizEntry = (props: IComponentProps) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const { quizId } = useParams();
 
+  const submitQuizMutation = useMutation({
+    mutationFn: submitQuiz,
+  });
+
   const compileSubmission = () => {
     const entry = quizRef.current?.questions.map((data) => {
       const options = data.options.filter((option) => option.selected === true);
@@ -43,14 +47,9 @@ const QuizEntry = (props: IComponentProps) => {
     return { email: quizData?.email, entry };
   };
 
-  const submitQuizMutation = useMutation({
-    mutationFn: submitQuiz,
-  });
-
   const updateQuestion = (updatedQuestion: IQuizTestQuestion) => {
     setQuiz((prevQuiz) => {
       if (!prevQuiz) return;
-
       const updatedQuestions = prevQuiz.questions.map((question) =>
         question.question === updatedQuestion.question
           ? updatedQuestion
@@ -73,6 +72,8 @@ const QuizEntry = (props: IComponentProps) => {
   };
 
   const handleQuizSubmission = (skip_confirmation: boolean) => {
+    if (submitQuizMutation.isPending) return; // avoid posting the data multiple times
+
     if (!skip_confirmation) {
       // Skipped in the case where the timer is up!
       if (!confirm("Are you sure? This cannot be reversible!")) {
@@ -97,7 +98,7 @@ const QuizEntry = (props: IComponentProps) => {
           toast.success("🎉 Yay! Quiz has been recorded! 🎯");
           navigate(`/tests/${quizId}`);
         },
-        onError: (error, _, __) => {
+        onError: (error) => {
           const message = ApiRequest.extractApiErrors(error);
           displayErrors(message);
         },
