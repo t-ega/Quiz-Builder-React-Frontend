@@ -56,10 +56,10 @@ class ApiRequest {
           response.config.url?.includes(ENDPOINTS.SIGNUP) ||
           response.config.url?.includes(ENDPOINTS.LOGIN)
         ) {
-          const token = response.data.token;
-          const username = response.config.url?.includes(ENDPOINTS.SIGNUP)
-            ? response.data.user?.username
-            : response.data?.username;
+          const { data } = response;
+
+          const token = data.data.token;
+          const username = data.data.username;
 
           // Store the token in cookies
           document.cookie = `token=${token};path=/;`;

@@ -45,6 +45,8 @@ const EditQuiz = (props: IComponentProps) => {
 
     const validQuestions = QuizOutputSchema.safeParse(quiz);
 
+    console.log("Vall", validQuestions.error?.errors);
+
     if (!validQuestions.success) {
       const { formErrors, fieldErrors } = validQuestions.error.flatten();
       const allErrors = [...formErrors, ...Object.values(fieldErrors).flat()];
@@ -52,6 +54,7 @@ const EditQuiz = (props: IComponentProps) => {
       return;
     }
 
+    console.log("Vall", validQuestions.data);
     saveQuizMutation.mutate({
       quizId: quizId!,
       ...validQuestions.data,

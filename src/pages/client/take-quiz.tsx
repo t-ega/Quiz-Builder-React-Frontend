@@ -173,7 +173,8 @@ const QuizEntry = (props: IComponentProps) => {
                   <h2>Quiz Title</h2>
                   <p>{quiz?.title}</p>
                 </div>
-                {quiz?.duration && (
+                {/* Javascript sees a duration of 0 as truthy */}
+                {quiz?.duration ? (
                   <div className="quiz-info">
                     <h2>Time left</h2>
                     <p className={limitedTimeLeft ? "limited-time" : ""}>
@@ -181,6 +182,8 @@ const QuizEntry = (props: IComponentProps) => {
                       mins
                     </p>
                   </div>
+                ) : (
+                  ""
                 )}
                 <div className="quiz-info">
                   <h2>All Questions</h2>

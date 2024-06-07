@@ -196,8 +196,10 @@ const HomePage = (props: IHomePageProps) => {
           <h4>
             Number of questions: <span>{data.data?.quiz.questions_count}</span>
           </h4>
-          {data.data?.quiz.duration && (
-            <h4>Duration: {data.data?.quiz.duration} mins</h4>
+          {data.data?.quiz.duration ? (
+            <h4>Durations: {data.data?.quiz.duration} mins</h4>
+          ) : (
+            ""
           )}
           <h3>
             To Begin please kindly enter your email address where the quiz was
